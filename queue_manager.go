@@ -127,7 +127,7 @@ func (p *MNSQueueManager) CreateQueue(queueName string, delaySeconds int32, maxM
 	var code int
 	code, err = send(p.cli, p.decoder, PUT, nil, &message, "queues/"+queueName, nil)
 
-	if code == http.StatusNoContent {
+	if code == http.StatusConflict{
 		err = ERR_MNS_QUEUE_ALREADY_EXIST_AND_HAVE_SAME_ATTR.New(errors.Params{"name": queueName})
 		return
 	}

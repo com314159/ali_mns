@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"fmt"
 
-	"github.com/souriki/ali_mns"
+	"github.com/com314159/ali_mns"
 	"github.com/gogap/logs"
 )
 
@@ -32,7 +32,7 @@ func main() {
 
     // 1. create a queue for receiving pushed messages
     queueManager := ali_mns.NewMNSQueueManager(client)
-	err := queueManager.CreateSimpleQueue("testQueue")
+	err := queueManager.CreateSimpleQueue("dev-test")
 	if err != nil && !ali_mns.ERR_MNS_QUEUE_ALREADY_EXIST_AND_HAVE_SAME_ATTR.IsEqual(err) {
 		fmt.Println(err)
 		return
@@ -40,17 +40,17 @@ func main() {
 
     // 2. create the topic
 	topicManager := ali_mns.NewMNSTopicManager(client)
-    // topicManager.DeleteTopic("testTopic")
-	err = topicManager.CreateSimpleTopic("testTopic")
+    // topicManager.DeleteTopic("dev-test-topic")
+	err = topicManager.CreateSimpleTopic("dev-test-topic")
 	if err != nil && !ali_mns.ERR_MNS_TOPIC_ALREADY_EXIST_AND_HAVE_SAME_ATTR.IsEqual(err) {
 		fmt.Println(err)
 		return
 	}
 
     // 3. subscribe to topic, the endpoint is set to be a queue in this sample
-    topic := ali_mns.NewMNSTopic("testTopic", client)
+    topic := ali_mns.NewMNSTopic("dev-test-topic", client)
     sub := ali_mns.MessageSubsribeRequest{
-        Endpoint:  topic.GenerateQueueEndpoint("testQueue"),
+        Endpoint:  topic.GenerateQueueEndpoint("dev-test"),
         NotifyContentFormat: ali_mns.SIMPLIFIED,
     }
 
@@ -94,7 +94,7 @@ func main() {
     }
 
     // 5. receive the message from queue
-	queue := ali_mns.NewMNSQueue("testQueue", client)
+	queue := ali_mns.NewMNSQueue("dev-test", client)
 
 	endChan := make(chan int)
 	respChan := make(chan ali_mns.MessageReceiveResponse)

@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"fmt"
 
-	"github.com/souriki/ali_mns"
+	"github.com/com314159/ali_mns"
 	"github.com/gogap/logs"
 )
 
@@ -18,7 +18,7 @@ type appConf struct {
 func main() {
 	conf := appConf{}
 
-	if bFile, e := ioutil.ReadFile("app.conf"); e != nil {
+	if bFile, e := ioutil.ReadFile("/Users/gzc/Work/go/src/github.com/com314159/ali_mns/example/app.conf"); e != nil {
 		panic(e)
 	} else {
 		if e := json.Unmarshal(bFile, &conf); e != nil {
@@ -37,14 +37,14 @@ func main() {
 
 
 	queueManager := ali_mns.NewMNSQueueManager(client)
-	err := queueManager.CreateSimpleQueue("test")
+	err := queueManager.CreateSimpleQueue("dev-test")
 
 	if err != nil && !ali_mns.ERR_MNS_QUEUE_ALREADY_EXIST_AND_HAVE_SAME_ATTR.IsEqual(err) {
 		fmt.Println(err)
 		return
 	}
 
-	queue := ali_mns.NewMNSQueue("test", client)
+	queue := ali_mns.NewMNSQueue("dev-test", client)
 	ret, err := queue.SendMessage(msg)
 
 	if err != nil {
